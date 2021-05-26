@@ -1,6 +1,6 @@
 #include <stdio.h>
 #include <stdlib.h>
-#include <strings.h>
+#include <string.h>
 #include <sys/types.h> // For compatibility
 #include <sys/socket.h>
 #include <arpa/inet.h> // For convertions htonl, htons, ntohl, ntohs
@@ -12,8 +12,8 @@
 // Task:
 // Create an example of interaction algorithm between client and prefork TCP server
 
-#define EXIT_FAILURE 1
-#define PORTNUM 1500 // Port > 1024 because program will not work not as root.
+//#define EXIT_FAILURE 1
+#define PORTNUM 23 // Port > 1024 because program will not work not as root.
 
 void main()
 {
@@ -35,7 +35,7 @@ void main()
 
     // Set address
     struct sockaddr_in serv_addr;
-    memset(&serv_addr, '\0', sizeof(serv_addr));	// Zero the the struct
+    memset(&serv_addr, '\0', sizeof(serv_addr));	// Zero the struct
     //bzero(&serv_addr, sizeof(serv_addr)); // depticated function! TODO use memset
     serv_addr.sin_family = AF_INET;
     serv_addr.sin_addr.s_addr = htonl(INADDR_ANY);  // 0.0.0.0
@@ -67,7 +67,8 @@ void main()
     {
         socklen_t addrlen;
 
-        bzero(&clnt_addr, sizeof(clnt_addr)); // depticated function! TODO use memset
+        memset(&clnt_addr, '\0', sizeof(clnt_addr));
+        //bzero(&clnt_addr, sizeof(clnt_addr)); // depticated function! TODO use memset
         addrlen = sizeof(clnt_addr);
 
         if ((ns = accept(sockfd, (struct sockaddr *)&clnt_addr, &addrlen)) == -1)
@@ -98,7 +99,7 @@ void main()
             }
 
             close(ns);
-            exit(0);
+            exit(EXIT_SUCCESS);
         }
 
         // If fork was called then descriptor will be available in both parent- and child-processes.
@@ -107,6 +108,6 @@ void main()
 
         printf("Server off! To change this behavior, look in code!\n\n");
         // To change this behavior just comment eixt(0) below:
-        exit(0);
+        exit(EXIT_SUCCESS);
     }
 }
