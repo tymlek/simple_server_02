@@ -35,7 +35,8 @@ void main()
 
     // Set address
     struct sockaddr_in serv_addr;
-    bzero(&serv_addr, sizeof(serv_addr)); // depticated function! TODO use memset
+    memset(&serv_addr, '\0', sizeof(serv_addr));	// Zero the the struct
+    //bzero(&serv_addr, sizeof(serv_addr)); // depticated function! TODO use memset
     serv_addr.sin_family = AF_INET;
     serv_addr.sin_addr.s_addr = htonl(INADDR_ANY);  // 0.0.0.0
 
